@@ -1,13 +1,14 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exceptions.BadAgeException;
 import ru.hogwarts.school.exceptions.BadStudentIdException;
 import ru.hogwarts.school.exceptions.EmptyStudentException;
 import ru.hogwarts.school.exceptions.NotFoundStudentException;
 import ru.hogwarts.school.model.Student;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -25,12 +26,12 @@ public class StudentService {
             throw new EmptyStudentException("Не все поля заполнены!");
         }
         newStudent.setId(++lastId);
-        students.put(lastId, newStudent);
+        students.put(newStudent.getId(), newStudent);
         return newStudent;
     }
 
     public Student findStudent(Long id) {
-        if (id <= 0) {
+        if (id < 0) {
             throw new BadStudentIdException("Некорректный id=" + id);
         }
         if (!students.containsKey(id)) {
@@ -50,8 +51,8 @@ public class StudentService {
         return modifiedStudent;
     }
 
-    public Student removeStudent(Long id) {
-        if (id <= 0) {
+    public Student removeStudent(Long    id) {
+        if (id < 0) {
             throw new BadStudentIdException("Некорректный id=" + id);
         }
         if (!students.containsKey(id)) {
@@ -62,5 +63,14 @@ public class StudentService {
 
     public Long getLastId() {
         return lastId;
+    }
+
+    public List<Student> getStudentsByAge(Integer age) {
+        if (age <= 0) {
+            throw new BadAgeException("Не корректный возраст - " + age);
+        }
+        return students.values().stream()
+                .filter(student -> Objects.equals(student.getAge(), age))
+                .toList();
     }
 }

@@ -3,10 +3,11 @@ package ru.hogwarts.school.service;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exceptions.*;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class FacultyService {
@@ -38,7 +39,7 @@ public class FacultyService {
         return faculties.get(id);
     }
 
-    public Faculty correctFaculty(Faculty modifiedFaculty) {
+    public Faculty changeFaculty(Faculty modifiedFaculty) {
         if (modifiedFaculty.isEmpty()) {
             throw new EmptyFacultyException("Не все поля заполнены!");
         }
@@ -62,5 +63,10 @@ public class FacultyService {
     public Long getLastId() {
         return lastId;
     }
-}
 
+    public List<Faculty> getFacultiesByColor(String color) {
+        return faculties.values().stream()
+                .filter(faculty -> Objects.equals(faculty.getColor(), color))
+                .toList();
+    }
+}
