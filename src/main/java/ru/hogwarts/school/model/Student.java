@@ -8,8 +8,7 @@ public class Student {
     private String name;
     private Integer age;
 
-    public Student(Long id, String name, Integer age) {
-        this.id = id;
+    public Student(String name, Integer age) {
         this.name = name;
         this.age = age;
     }
@@ -36,10 +35,6 @@ public class Student {
 
     public void setAge(Integer age) {
         this.age = age;
-    }
-
-    public boolean isEmpty() {
-        return id != null && !name.isBlank() && age != null;
     }
 
     @Override

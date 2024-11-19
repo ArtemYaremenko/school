@@ -1,11 +1,9 @@
 package ru.hogwarts.school.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
-import java.lang.module.ResolvedModule;
 import java.util.List;
 
 @RestController
@@ -18,28 +16,28 @@ public class StudentController {
         this.service = service;
     }
 
-    @PostMapping
-    public ResponseEntity<Student> addStudent(@RequestBody Student newStudent) {
-        return ResponseEntity.ok(service.addStudent(newStudent));
+    @PostMapping("/add")
+    public Student addStudent(@RequestBody Student newStudent) {
+        return service.addStudent(newStudent);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Student> findStudent(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findStudent(id));
+    @GetMapping("/find/{id}")
+    public Student findStudent(@PathVariable("id") Long id) {
+        return service.findStudent(id);
     }
 
-    @PutMapping
-    public ResponseEntity<Student> correctStudent(@RequestBody Student modifiedStudent) {
-        return ResponseEntity.ok(service.correctStudent(modifiedStudent));
+    @PutMapping("/correct/{id}")
+    public Student correctStudent(@PathVariable("id") Long id, @RequestBody Student modifiedStudent) {
+        return service.correctStudent(id, modifiedStudent);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Student> removeStudent(@PathVariable Long id) {
-        return ResponseEntity.ok(service.removeStudent(id));
+    @DeleteMapping("/remove/{id}")
+    public Student removeStudent(@PathVariable Long id) {
+        return service.removeStudent(id);
     }
 
     @GetMapping("/age/{age}")
-    public ResponseEntity<List<Student>> studentsByAge(@PathVariable Integer age) {
-        return ResponseEntity.ok(service.getStudentsByAge(age));
+    public List<Student> studentsByAge(@PathVariable Integer age) {
+        return service.getStudentsByAge(age);
     }
 }

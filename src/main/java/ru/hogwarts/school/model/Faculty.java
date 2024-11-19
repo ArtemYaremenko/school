@@ -8,8 +8,7 @@ public class Faculty {
     private String name;
     private String color;
 
-    public Faculty(Long id, String name, String color) {
-        this.id = id;
+    public Faculty(String name, String color) {
         this.name = name;
         this.color = color;
     }
@@ -36,10 +35,6 @@ public class Faculty {
 
     public void setColor(String color) {
         this.color = color;
-    }
-
-    public boolean isEmpty() {
-        return id != null && !name.isBlank() && color != null;
     }
 
     @Override
