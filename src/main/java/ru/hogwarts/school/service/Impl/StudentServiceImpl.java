@@ -2,51 +2,43 @@ package ru.hogwarts.school.service.Impl;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    private Long lastId = 0L;
+    private final StudentRepository studentRepository;
 
-    private Map<Long, Student> students;
-
-    public StudentServiceImpl() {
-        this.students = new HashMap<>();
+    public StudentServiceImpl(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
     @Override
     public Student addStudent(Student newStudent) {
-        newStudent.setId(++lastId);
-        students.put(newStudent.getId(), newStudent);
-        return newStudent;
+        return studentRepository.save(newStudent);
     }
 
     @Override
     public Student findStudent(Long id) {
-        return students.get(id);
+        return studentRepository.findById(id).get();
     }
 
     @Override
-    public Student correctStudent(Long id, Student modifiedStudent) {
-        modifiedStudent.setId(id);
-        students.put(id, modifiedStudent);
-        return modifiedStudent;
+    public Student correctStudent(Student modifiedStudent) {
+        return studentRepository.save(modifiedStudent);
     }
 
     @Override
-    public Student removeStudent(Long id) {
-        return students.remove(id);
+    public void removeStudent(Long id) {
+        studentRepository.deleteById(id);
     }
 
     @Override
     public List<Student> getStudentsByAge(Integer age) {
-        return students.values().stream()
-                .filter(student -> student.getAge().equals(age))
-                .toList();
+        return studentRepository.findByAge(age);
     }
 }

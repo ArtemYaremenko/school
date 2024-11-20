@@ -27,13 +27,13 @@ public class StudentController {
     }
 
     @PutMapping("/correct/{id}")
-    public Student correctStudent(@PathVariable("id") Long id, @RequestBody Student modifiedStudent) {
-        return service.correctStudent(id, modifiedStudent);
+    public Student correctStudent(@RequestBody Student modifiedStudent) {
+        return service.correctStudent(modifiedStudent);
     }
 
     @DeleteMapping("/remove/{id}")
-    public Student removeStudent(@PathVariable Long id) {
-        return service.removeStudent(id);
+    public void removeStudent(@PathVariable Long id) {
+        service.removeStudent(id);
     }
 
     @GetMapping("/age/{age}")
