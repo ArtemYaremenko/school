@@ -2,8 +2,10 @@ package ru.hogwarts.school.service.Impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exceptions.FacultyNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
+import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty findFaculty(Long id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id).orElseThrow(FacultyNotFoundException::new);
     }
 
     @Override
@@ -48,5 +50,10 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public List<Faculty> getFacultiesByColor(String color) {
         return facultyRepository.findByColor(color);
+    }
+
+    @Override
+    public Faculty getStudentsFacultyByStudentId(Long id) {
+        return facultyRepository.findStudentsFaculty(id);
     }
 }
