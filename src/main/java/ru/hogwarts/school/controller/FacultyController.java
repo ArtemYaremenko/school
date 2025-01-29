@@ -26,14 +26,19 @@ public class FacultyController {
         return service.findFaculty(id);
     }
 
-    @PutMapping("/change")
-    private Faculty changeFaculty(@RequestBody Faculty changedFaculty) {
-        return service.changeFaculty(changedFaculty);
+    @PutMapping("/change/{id}")
+    private Faculty changeFaculty(@PathVariable("id") Long id, @RequestBody Faculty changedFaculty) {
+        return service.changeFaculty(id, changedFaculty);
     }
 
     @DeleteMapping("/remove/{id}")
     public void removeFaculty(@PathVariable("id") Long id) {
         service.removeFaculty(id);
+    }
+
+    @GetMapping("/all")
+    public List<Faculty> allFaculties() {
+        return service.getAllFaculty();
     }
 
     @GetMapping("/{color}")

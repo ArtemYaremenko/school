@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service.Impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
@@ -13,6 +14,7 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
 
+    @Autowired
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
@@ -28,13 +30,19 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student correctStudent(Student modifiedStudent) {
+    public Student correctStudent(Long id, Student modifiedStudent) {
+        modifiedStudent.setId(id);
         return studentRepository.save(modifiedStudent);
     }
 
     @Override
     public void removeStudent(Long id) {
         studentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 
     @Override

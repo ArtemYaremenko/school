@@ -10,9 +10,11 @@ public interface StudentService {
 
     Student findStudent(Long id);
 
-    Student correctStudent(Student modifiedStudent);
+    Student correctStudent(Long id, Student modifiedStudent);
 
     void removeStudent(Long id);
+
+    List<Student> getAllStudents();
 
     List<Student> getStudentsByAge(Integer age);
 }

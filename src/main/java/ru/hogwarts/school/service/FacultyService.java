@@ -10,9 +10,11 @@ public interface FacultyService {
 
     Faculty findFaculty(Long id);
 
-    Faculty changeFaculty(Faculty modifiedFaculty);
+    Faculty changeFaculty(Long id, Faculty modifiedFaculty);
 
     void removeFaculty(Long id);
+
+    List<Faculty> getAllFaculty();
 
     List<Faculty> getFacultiesByColor(String color);
 }
