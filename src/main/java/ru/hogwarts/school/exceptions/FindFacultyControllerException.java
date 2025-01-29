@@ -4,11 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class EmptyStudentException extends RuntimeException {
-    public EmptyStudentException() {
+public class FindFacultyControllerException extends RuntimeException{
+    public FindFacultyControllerException() {
     }
 
-    public EmptyStudentException(String message) {
+    public FindFacultyControllerException(String message) {
         super(message);
     }
 }

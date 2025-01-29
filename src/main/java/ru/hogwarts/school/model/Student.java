@@ -1,15 +1,27 @@
 package ru.hogwarts.school.model;
 
+import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.Objects;
 
+@Entity
 public class Student {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private Integer age;
 
-    public Student(Long id, String name, Integer age) {
-        this.id = id;
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
+
+    public Student() {
+    }
+
+    public Student(String name, Integer age) {
         this.name = name;
         this.age = age;
     }
@@ -36,10 +48,6 @@ public class Student {
 
     public void setAge(Integer age) {
         this.age = age;
-    }
-
-    public boolean isEmpty() {
-        return id != null && !name.isBlank() && age != null;
     }
 
     @Override
