@@ -41,8 +41,8 @@ public class FacultyController {
         return service.getAllFaculty();
     }
 
-    @GetMapping("/find/{name_or_color}")
-    public List<Faculty> facultyByNameOrColor(@PathVariable String nameOrColor) {
+    @GetMapping("/find")
+    public List<Faculty> facultyByNameOrColor(@RequestParam("nameOrColor") String nameOrColor) {
         return service.getFacultiesByNameOrColor(nameOrColor);
     }
 
