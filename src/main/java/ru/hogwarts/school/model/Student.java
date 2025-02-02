@@ -13,10 +13,6 @@ public class Student {
     private String name;
     private Integer age;
 
-    @ManyToOne
-    @JoinColumn(name = "faculty_id")
-    private Faculty faculty;
-
     public Student() {
     }
 
