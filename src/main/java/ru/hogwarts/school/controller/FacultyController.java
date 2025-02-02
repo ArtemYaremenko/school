@@ -17,28 +17,41 @@ public class FacultyController {
     }
 
     @PostMapping("/add")
-    public Faculty addFaculty(@RequestBody Faculty newFaculty) {
+    public Faculty faculty(@RequestBody Faculty newFaculty) {
         return service.addFaculty(newFaculty);
     }
 
     @GetMapping("/find/{id}")
-    public Faculty findFaculty(@PathVariable("id") Long id) {
+    public Faculty facultyById(@PathVariable("id") Long id) {
         return service.findFaculty(id);
     }
 
     @PutMapping("/change/{id}")
-    private Faculty changeFaculty(@PathVariable("id") Long id, @RequestBody Faculty changedFaculty) {
+    private Faculty faculty(@PathVariable("id") Long id, @RequestBody Faculty changedFaculty) {
         return service.changeFaculty(id, changedFaculty);
     }
 
     @DeleteMapping("/remove/{id}")
-    public void removeFaculty(@PathVariable("id") Long id) {
+    public void faculty(@PathVariable("id") Long id) {
         service.removeFaculty(id);
     }
 
     @GetMapping("/all")
-    public List<Faculty> allFaculties() {
+    public List<Faculty> faculties() {
         return service.getAllFaculty();
     }
+
+    @GetMapping("/find/{name_or_color}")
+    public List<Faculty> facultyByNameOrColor(@PathVariable String nameOrColor) {
+        return service.getFacultiesByNameOrColor(nameOrColor);
+    }
+
+    @GetMapping("/student")
+    public Faculty studentsFaculty(@RequestParam("id") Long id) {
+        return service.getStudentsFacultyByStudentId(id);
+    }
+
+
+
 
 }
