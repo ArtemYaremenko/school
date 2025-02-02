@@ -1,7 +1,6 @@
 package ru.hogwarts.school.model;
 
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
 
