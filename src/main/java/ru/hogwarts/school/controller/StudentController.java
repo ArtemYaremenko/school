@@ -46,13 +46,4 @@ public class StudentController {
         return service.getStudentsByAge(age);
     }
 
-    @GetMapping("/age")
-    public List<Student> studentsByAgeBetween(@RequestParam("min") Integer minAge, @RequestParam("max") Integer maxAge) {
-        return service.getStudentsByAgeBetween(minAge, maxAge);
-    }
-
-    @GetMapping("/faculty/{id}")
-    public List<Student> studentsOfFaculty(@PathVariable("id") Long id) {
-        return service.getStudentsOfFacultyByFacultyId(id);
-    }
 }
