@@ -17,7 +17,7 @@ public class FacultyController {
     }
 
     @PostMapping("/add")
-    public Faculty faculty(@RequestBody Faculty newFaculty) {
+    public Faculty addFaculty(@RequestBody Faculty newFaculty) {
         return service.addFaculty(newFaculty);
     }
 
