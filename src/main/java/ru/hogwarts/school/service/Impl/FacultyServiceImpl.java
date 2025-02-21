@@ -54,6 +54,4 @@ public class FacultyServiceImpl implements FacultyService {
     public Faculty getStudentsFacultyByStudentId(Long id) {
         return facultyRepository.findByStudentsId(id);
     }
-
-
 }
