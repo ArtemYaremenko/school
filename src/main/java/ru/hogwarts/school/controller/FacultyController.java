@@ -50,8 +50,4 @@ public class FacultyController {
     public Faculty studentsFaculty(@RequestParam("id") Long id) {
         return service.getStudentsFacultyByStudentId(id);
     }
-
-
-
-
 }
