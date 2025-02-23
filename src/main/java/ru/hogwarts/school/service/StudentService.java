@@ -1,9 +1,10 @@
 package ru.hogwarts.school.service;
 
+import ru.hogwarts.school.model.AmountOfStudents;
+import ru.hogwarts.school.model.AverageAge;
 import ru.hogwarts.school.model.Student;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface StudentService {
     Student addStudent(Student newStudent);
@@ -21,5 +22,11 @@ public interface StudentService {
     List<Student> getStudentsByAgeBetween(Integer minAge, Integer maxAge);
 
     List<Student> getStudentsOfFacultyByFacultyId(Long id);
+
+    AmountOfStudents calculateAllStudents();
+
+    AverageAge calculateAverageAgeOfAllStudents();
+
+    List<Student> findLastStudents(Integer amount);
 
 }
