@@ -64,7 +64,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public AmountOfStudents calculateAllStudents() {
-        return studentRepository.getAllStudents();
+        return studentRepository.getAmountOfStudents();
     }
 
     @Override

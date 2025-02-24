@@ -3,6 +3,7 @@ package ru.hogwarts.school.controller;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -10,6 +11,8 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.hogwarts.school.model.AmountOfStudents;
+import ru.hogwarts.school.model.AverageAge;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.Impl.StudentServiceImpl;
@@ -54,7 +57,7 @@ public class StudentControllerTest {
         when(studentRepository.save(any(Student.class))).thenReturn(student);
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/student/add")
+                .post("/students/")
                 .content(studentObject.toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -76,7 +79,7 @@ public class StudentControllerTest {
         when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/find/" + id))
+                        .get("/students/" + id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
@@ -87,7 +90,7 @@ public class StudentControllerTest {
     public void testFindStudentWhenStudentNotExist() throws Exception{
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/find/9"))
+                        .get("/students/9"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -108,7 +111,7 @@ public class StudentControllerTest {
         when(studentRepository.save(any(Student.class))).thenReturn(student);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/student/correct/" + id)
+                        .put("/students/" + id)
                         .content(studentObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -122,7 +125,7 @@ public class StudentControllerTest {
     public void testRemoveStudent() throws Exception {
         long id = 1L;
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/student/remove/" + id))
+                        .delete("/students/" + id))
                 .andExpect(status().isOk());
     }
 
@@ -135,7 +138,7 @@ public class StudentControllerTest {
 
         when(studentRepository.findAll()).thenReturn(students);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/all"))
+                        .get("/students/all"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
 
@@ -152,7 +155,7 @@ public class StudentControllerTest {
         when(studentRepository.findByAge(any(Integer.class))).thenReturn(students);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/age/" + age))
+                        .get("/students/age/" + age))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
     }
@@ -168,7 +171,7 @@ public class StudentControllerTest {
         when(studentRepository.findByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(students);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/age?min=10&max=12" + age))
+                        .get("/students/age?min=10&max=12" + age))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
     }
@@ -186,7 +189,57 @@ public class StudentControllerTest {
         when(studentRepository.findByFaculty_id(any(Long.class))).thenReturn(students);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/faculty?id=" + facultyId))
+                        .get("/students/faculty?id=" + facultyId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    public void testCalculateAllStudents() throws Exception {
+        Integer amount = 10;
+        AmountOfStudents amountOfStudents = new AmountOfStudents() {
+            @Override
+            public Integer getAmountOfStudents() {
+                return amount;
+            }
+        };
+        when(studentRepository.getAmountOfStudents()).thenReturn(amountOfStudents);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/students/amount"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.amountOfStudents").value(amount));
+    }
+
+    @Test
+    public void testCalculateAverageAgeOfAllStudents() throws Exception {
+        Float average = 10.5f;
+        AverageAge averageAge = new AverageAge() {
+            @Override
+            public Float getAverageAge() {
+                return average;
+            }
+        };
+        when(studentRepository.getAverageAge()).thenReturn(averageAge);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/students/average"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.averageAge").value(average));
+    }
+
+    @Test
+    public void testFindLastStudents() throws Exception {
+        Long id = 1L;
+        String name = "Harry";
+        Integer age = 11;
+
+        Student student = new Student(name, age);
+        student.setId(id);
+        List<Student> students = List.of(student);
+
+        when(studentRepository.findLastStudents(any(Integer.class))).thenReturn(students);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/students/last?amount=1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
     }
