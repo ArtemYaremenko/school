@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,10 @@ import ru.hogwarts.school.service.AvatarService;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @RestController
-@RequestMapping("/avatar")
+@RequestMapping("/avatars")
 public class AvatarController {
 
     private final AvatarService service;
@@ -58,5 +60,11 @@ public class AvatarController {
 
             bis.transferTo(bos);
         }
+    }
+
+    @GetMapping("/page")
+    public List<Avatar> getAvatars(@RequestParam("page") Integer pageNumber, @RequestParam("size") Integer pageSize) {
+        List<Avatar> avatars = service.getAllAvatars(pageNumber, pageSize);
+        return avatars;
     }
 }

@@ -3,6 +3,8 @@ package ru.hogwarts.school.service.Impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exceptions.StudentNotFoundException;
+import ru.hogwarts.school.model.AmountOfStudents;
+import ru.hogwarts.school.model.AverageAge;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
@@ -58,5 +60,20 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> getStudentsOfFacultyByFacultyId(Long id) {
         return studentRepository.findByFaculty_id(id);
+    }
+
+    @Override
+    public AmountOfStudents calculateAllStudents() {
+        return studentRepository.getAmountOfStudents();
+    }
+
+    @Override
+    public AverageAge calculateAverageAgeOfAllStudents() {
+        return studentRepository.getAverageAge();
+    }
+
+    @Override
+    public List<Student> findLastStudents(Integer number) {
+        return studentRepository.findLastStudents(number);
     }
 }

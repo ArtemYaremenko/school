@@ -1,14 +1,15 @@
 package ru.hogwarts.school.controller;
 
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.exceptions.StudentNotFoundException;
+import ru.hogwarts.school.model.AmountOfStudents;
+import ru.hogwarts.school.model.AverageAge;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 public class StudentController {
 
     private final StudentService service;
@@ -17,44 +18,59 @@ public class StudentController {
         this.service = service;
     }
 
-    @PostMapping("/add")
-    public Student student(@RequestBody Student newStudent) {
+    @PostMapping("/")
+    public Student addStudent(@RequestBody Student newStudent) {
         return service.addStudent(newStudent);
     }
 
-    @GetMapping("/find/{id}")
-    public Student studentById(@PathVariable("id") Long id) {
+    @GetMapping("/{id}")
+    public Student findStudentById(@PathVariable("id") Long id) {
         return service.findStudent(id);
     }
 
-    @PutMapping("/correct/{id}")
-    public Student student(@PathVariable("id") Long id, @RequestBody Student modifiedStudent) {
+    @PutMapping("/{id}")
+    public Student correctStudent(@PathVariable("id") Long id, @RequestBody Student modifiedStudent) {
         return service.correctStudent(id, modifiedStudent);
     }
 
-    @DeleteMapping("/remove/{id}")
-    public void student(@PathVariable("id") Long id) {
+    @DeleteMapping("/{id}")
+    public void removeStudent(@PathVariable("id") Long id) {
         service.removeStudent(id);
     }
 
     @GetMapping("/all")
-    public List<Student> students() {
+    public List<Student> findAllStudents() {
         return service.getAllStudents();
     }
 
     @GetMapping("/age/{age}")
-    public List<Student> studentsByAge(@PathVariable("age") Integer age) {
+    public List<Student> findStudentsByAge(@PathVariable("age") Integer age) {
         return service.getStudentsByAge(age);
     }
 
     @GetMapping("/age")
-    public List<Student> studentsByAgeBetween(@RequestParam("min") Integer minAge, @RequestParam("max") Integer maxAge) {
+    public List<Student> findStudentsByAgeBetween(@RequestParam("min") Integer minAge, @RequestParam("max") Integer maxAge) {
         return service.getStudentsByAgeBetween(minAge, maxAge);
     }
 
     @GetMapping("/faculty")
-    public List<Student> studentsByFaculty(@RequestParam("id") Long id) {
+    public List<Student> findStudentsByFaculty(@RequestParam("id") Long id) {
         return service.getStudentsOfFacultyByFacultyId(id);
+    }
+
+    @GetMapping("/amount")
+    public AmountOfStudents calculateAllStudents() {
+        return service.calculateAllStudents();
+    }
+
+    @GetMapping("/average")
+    public AverageAge calculateAverageAgeOfAllStudents() {
+        return service.calculateAverageAgeOfAllStudents();
+    }
+
+    @GetMapping("/last")
+    public List<Student> findLastStudents(@RequestParam("amount") Integer amount) {
+        return service.findLastStudents(amount);
     }
 
 }
