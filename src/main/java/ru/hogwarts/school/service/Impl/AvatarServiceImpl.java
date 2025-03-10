@@ -1,6 +1,8 @@
 package ru.hogwarts.school.service.Impl;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Transactional
 public class AvatarServiceImpl implements AvatarService {
 
+    Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
     @Value("${students.avatar.dir.path}")
     private String avatarsDir;
 
@@ -61,19 +64,23 @@ public class AvatarServiceImpl implements AvatarService {
         avatar.setFileSize(avatarFile.getSize());
         avatar.setMediaType(avatarFile.getContentType());
         avatar.setData(generateData(filePath));
-
+        logger.debug("getFacultiesByNameOrColor - {}", avatar.getStudent());
         avatarRepository.save(avatar);
     }
 
     @Override
     public Avatar findAvatar(Long studentId) {
-        return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
+        Avatar avatar = avatarRepository.findByStudentId(studentId).orElse(new Avatar());
+        logger.debug("getFacultiesByNameOrColor - {}", avatar.getStudent());
+        return avatar;
     }
 
     @Override
     public List<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
-        return avatarRepository.findAll(pageRequest).getContent();
+        List<Avatar> avatars = avatarRepository.findAll(pageRequest).getContent();
+        logger.debug("getFacultiesByNameOrColor - {}", avatars);
+        return avatars;
     }
 
     private byte[] generateData(Path filePath) throws IOException {
