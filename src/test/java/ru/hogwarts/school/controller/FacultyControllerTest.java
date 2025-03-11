@@ -54,7 +54,7 @@ public class FacultyControllerTest {
         when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/faculty/add")
+                        .post("/faculty/")
                         .content(studentObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -76,7 +76,7 @@ public class FacultyControllerTest {
         when(facultyRepository.findById(any(Long.class))).thenReturn(Optional.of(faculty));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/find/" + id))
+                        .get("/faculty/" + id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
@@ -108,7 +108,7 @@ public class FacultyControllerTest {
         when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/faculty/change/" + id)
+                        .put("/faculty/" + id)
                         .content(studentObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -122,7 +122,7 @@ public class FacultyControllerTest {
     public void testRemoveStudent() throws Exception {
         long id = 1L;
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/faculty/remove/" + id))
+                        .delete("/faculty/" + id))
                 .andExpect(status().isOk());
     }
 
@@ -143,8 +143,8 @@ public class FacultyControllerTest {
 
     @Test
     public void testFindFacultyByNameOrColor() throws Exception {
-        String name = "Gryffindor";
-        String color = "Red";
+        String name = "Гриффиндор";
+        String color = "Красный";
 
         Faculty faculty = new Faculty(name, color);
         List<Faculty> faculties = List.of(faculty);
@@ -152,7 +152,7 @@ public class FacultyControllerTest {
         when(facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(any(String.class), any(String.class))).thenReturn(faculties);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/find?nameOrColor=" + name))
+                        .get("/faculty/nameOrColor?nameOrColor=" + name))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
     }
