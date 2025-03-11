@@ -29,4 +29,8 @@ public interface StudentService {
 
     List<Student> findLastStudents(Integer amount);
 
+    Double getAverageAgeOfAllStudents();
+
+    List<String> getNamesStarringWithA();
+
 }

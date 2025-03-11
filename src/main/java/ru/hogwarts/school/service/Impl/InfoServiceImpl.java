@@ -8,7 +8,7 @@ import ru.hogwarts.school.service.InfoService;
 @Service
 public class InfoServiceImpl implements InfoService {
 
-    Logger logger = LoggerFactory.getLogger(InfoServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(InfoServiceImpl.class);
     @Value("${server.port}")
     private Integer port;
     @Override

@@ -9,12 +9,14 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
-    Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
 
     private final FacultyRepository facultyRepository;
 
@@ -68,5 +70,26 @@ public class FacultyServiceImpl implements FacultyService {
         Faculty faculty = facultyRepository.findByStudentsId(id);
         logger.debug("getStudentsFacultyByStudentId - {}", faculty);
         return faculty;
+    }
+
+    @Override
+    public String getLongestFacultyName() {
+        String name = facultyRepository.findAll()
+                .stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparing(String::length))
+                .orElseThrow();
+        logger.debug("facultyRepository - {}", name);
+        return name;
+    }
+
+    @Override
+    public Long getIterate() {
+        Long sum = Stream.iterate(1L, a -> a + 1L)
+                .parallel()
+                .limit(1_000_000L)
+                .reduce(0L, Long::sum);
+        logger.debug("getIterate - {}", sum);
+        return sum;
     }
 }

@@ -12,11 +12,12 @@ import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     private final StudentRepository studentRepository;
 
     @Autowired
@@ -97,5 +98,28 @@ public class StudentServiceImpl implements StudentService {
         List<Student> students = studentRepository.findLastStudents(number);
         logger.debug("findLastStudents - {}", students);
         return students;
+    }
+
+    @Override
+    public Double getAverageAgeOfAllStudents() {
+        Double averageAge = studentRepository.findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElseThrow();
+        logger.debug("getAverageAgeOfAllStudents - {}", averageAge);
+        return averageAge;
+    }
+
+    @Override
+    public List<String> getNamesStarringWithA() {
+        List<String> namesA = studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .filter(n -> n.startsWith("А"))
+                .sorted()
+                .toList();
+        logger.debug("getNamesStarringWithA - {}", namesA);
+        return namesA;
     }
 }
