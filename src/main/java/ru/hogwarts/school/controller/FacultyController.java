@@ -50,4 +50,14 @@ public class FacultyController {
     public Faculty studentsFaculty(@RequestParam("id") Long id) {
         return service.getStudentsFacultyByStudentId(id);
     }
+
+    @GetMapping("/logest_name")
+    public String getLongestFacultyName() {
+        return service.getLongestFacultyName();
+    }
+
+    @GetMapping("/iterate")
+    public Long getIterate() {
+        return service.getIterate();
+    }
 }
