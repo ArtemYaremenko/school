@@ -83,4 +83,46 @@ public class StudentController {
         return service.getNamesStarringWithA();
     }
 
+    @GetMapping("/print-parallel")
+    public void printParallel() {
+        List<Student> students = service.getAllStudents();
+        System.out.println(students.get(0));
+        System.out.println(students.get(1));
+
+        new Thread(() ->    {
+                System.out.println(students.get(2));
+                System.out.println(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(4));
+            System.out.println(students.get(5));
+        }).start();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void printSynchronized() {
+        int studentNumber = 0;
+        List<Student> students = service.getAllStudents();
+        printStudent();
+        printStudent();
+
+        new Thread(() -> {
+            printStudent();
+            printStudent();
+        }).start();
+
+        new Thread(() -> {
+            printStudent();
+            printStudent();
+        }).start();
+    }
+    public synchronized void printStudent() {
+        List<Student> students = service.getAllStudents();
+        for (Student student : students) {
+            System.out.println(student);
+        }
+    }
+
+
 }
